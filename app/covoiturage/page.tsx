@@ -324,8 +324,7 @@ function CarteChaufeur({ c, onRefresh }: { c: Chauffeur; onRefresh: () => void }
 // ─── Formulaire chauffeur ───────────────────────────────────────────────────
 function FormulaireChaufeur({ onRefresh }: { onRefresh: () => void }) {
   const [open, setOpen] = useState(false)
-  const [showWa, setShowWa] = useState(false)
-  const [form, setForm] = useState({ nom: '', depart: '', arrivee: '', capacite: '4', phone: '', wabotKey: '' })
+  const [form, setForm] = useState({ nom: '', depart: '', arrivee: '', capacite: '4' })
   const [loading, setLoading] = useState(false)
 
   const submit = async (e: React.FormEvent) => {
@@ -336,8 +335,8 @@ function FormulaireChaufeur({ onRefresh }: { onRefresh: () => void }) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(form),
     })
-    setForm({ nom: '', depart: '', arrivee: '', capacite: '4', phone: '', wabotKey: '' })
-    setLoading(false); setOpen(false); setShowWa(false); onRefresh()
+    setForm({ nom: '', depart: '', arrivee: '', capacite: '4' })
+    setLoading(false); setOpen(false); onRefresh()
   }
 
   if (!open) return (
@@ -367,30 +366,9 @@ function FormulaireChaufeur({ onRefresh }: { onRefresh: () => void }) {
           {[1,2,3,4,5,6,7,8].map(n => <option key={n} value={n}>👥 {n} champion{n > 1 ? 's' : ''}</option>)}
         </select>
 
-        {/* Notifs WhatsApp optionnelles */}
-        <button type="button" onClick={() => setShowWa(v => !v)}
-          style={{ background: showWa ? '#f0fdf4' : '#f9fafb', border: '1px solid #d1d5db', borderRadius: 12, padding: '10px 14px', fontSize: 14, cursor: 'pointer', color: '#374151', textAlign: 'left' }}>
-          💬 {showWa ? '▼' : '▶'} Recevoir des notifs WhatsApp (optionnel)
-        </button>
-
-        {showWa && (
-          <div style={{ background: '#f0fdf4', borderRadius: 12, padding: 12, display: 'flex', flexDirection: 'column', gap: 8 }}>
-            <p style={{ margin: 0, fontSize: 12, color: '#166534' }}>
-              1. Enregistre <strong>+34 644 60 09 64</strong> dans tes contacts (CallMeBot)<br />
-              2. Envoie-lui sur WhatsApp : <strong>I allow callmebot to send me messages</strong><br />
-              3. Tu reçois ta clé API → renseigne-la ci-dessous
-            </p>
-            <input value={form.phone} onChange={e => setForm(f => ({ ...f, phone: e.target.value }))}
-              placeholder="📱 Ton numéro (ex: 33612345678)" type="tel"
-              style={{ padding: '11px 14px', borderRadius: 10, border: '1px solid #86efac', fontSize: 14 }} />
-            <input value={form.wabotKey} onChange={e => setForm(f => ({ ...f, wabotKey: e.target.value }))}
-              placeholder="🔑 Clé API CallMeBot"
-              style={{ padding: '11px 14px', borderRadius: 10, border: '1px solid #86efac', fontSize: 14 }} />
-          </div>
-        )}
 
         <div style={{ display: 'flex', gap: 8 }}>
-          <button type="button" onClick={() => { setOpen(false); setShowWa(false) }}
+          <button type="button" onClick={() => setOpen(false)}
             style={{ flex: 1, padding: 14, borderRadius: 12, border: '1px solid #d1d5db', background: 'white', fontSize: 15, cursor: 'pointer', color: '#6b7280' }}>
             Annuler
           </button>
