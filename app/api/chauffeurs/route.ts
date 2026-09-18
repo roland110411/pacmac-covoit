@@ -4,19 +4,9 @@ import { NextRequest, NextResponse } from 'next/server'
 const prisma = new PrismaClient()
 
 export async function GET() {
-  const debut = new Date()
-  debut.setHours(0, 0, 0, 0)
-  const fin = new Date()
-  fin.setHours(23, 59, 59, 999)
-
   const chauffeurs = await prisma.chauffeur.findMany({
-    where: {
-      OR: [
-        { special: true },
-        { createdAt: { gte: debut, lte: fin } },
-      ],
-    },
-    include: { passagers: { where: { createdAt: { gte: debut, lte: fin } }, orderBy: { createdAt: 'asc' } } },
+    where: { efface: false },
+    include: { passagers: { where: { efface: false }, orderBy: { createdAt: 'asc' } } },
     orderBy: [{ special: 'desc' }, { createdAt: 'desc' }],
   })
   return NextResponse.json(chauffeurs)

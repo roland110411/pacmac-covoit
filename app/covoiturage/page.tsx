@@ -448,6 +448,13 @@ export default function CovoituragePage() {
   const [chauffeurs, setChauffeurs] = useState<Chauffeur[]>([])
   const [orphelins, setOrphelins] = useState<Passager[]>([])
   const [showNotifModal, setShowNotifModal] = useState(false)
+  const [confirmRaz, setConfirmRaz] = useState(false)
+
+  const raz = async () => {
+    await fetch('/api/raz', { method: 'DELETE' })
+    setConfirmRaz(false)
+    refresh()
+  }
 
   const refresh = useCallback(async () => {
     const [rC, rO] = await Promise.all([
@@ -491,10 +498,35 @@ export default function CovoituragePage() {
             {totalPassagers} champion{totalPassagers !== 1 ? 's' : ''} inscrit{totalPassagers !== 1 ? 's' : ''}
           </p>
         </div>
-        <button onClick={() => setShowNotifModal(true)}
-          style={{ background: 'none', border: 'none', fontSize: 14, cursor: 'pointer', opacity: 0.5, padding: 4 }}>
-          🔔
-        </button>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          {confirmRaz ? (
+            <div style={{ position: 'fixed', inset: 0, zIndex: 50, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <div onClick={() => setConfirmRaz(false)} style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.4)' }} />
+              <div style={{ position: 'relative', background: 'white', borderRadius: 18, padding: '24px 20px', margin: '0 24px', maxWidth: 360, width: '100%', textAlign: 'center' }}>
+                <div style={{ fontSize: 36, marginBottom: 10 }}>⚠️</div>
+                <p style={{ margin: '0 0 6px', fontWeight: 800, fontSize: 16, color: '#dc2626' }}>Attention !</p>
+                <p style={{ margin: '0 0 18px', fontSize: 14, color: '#374151' }}>
+                  Seul <strong>Coco</strong> est habilité à remettre à zéro !
+                </p>
+                <div style={{ display: 'flex', gap: 10 }}>
+                  <button onClick={() => setConfirmRaz(false)}
+                    style={{ flex: 1, padding: '12px', borderRadius: 12, border: '1px solid #d1d5db', background: 'white', fontSize: 14, cursor: 'pointer' }}>Annuler</button>
+                  <button onClick={raz}
+                    style={{ flex: 1, padding: '12px', borderRadius: 12, border: 'none', background: '#dc2626', color: 'white', fontSize: 14, fontWeight: 700, cursor: 'pointer' }}>Je suis Coco ✓</button>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <button onClick={() => setConfirmRaz(true)}
+              style={{ background: 'none', border: '1px solid #e5e7eb', borderRadius: 8, fontSize: 11, fontWeight: 700, color: '#9ca3af', cursor: 'pointer', padding: '4px 8px' }}>
+              RAZ
+            </button>
+          )}
+          <button onClick={() => setShowNotifModal(true)}
+            style={{ background: 'none', border: 'none', fontSize: 14, cursor: 'pointer', opacity: 0.5, padding: 4 }}>
+            🔔
+          </button>
+        </div>
       </div>
 
       {/* Contenu */}
