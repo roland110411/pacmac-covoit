@@ -94,7 +94,7 @@ function CarteSansVehicule({ c, onRefresh }: { c: Chauffeur; onRefresh: () => vo
   }
 
   return (
-    <div style={{ background: '#fffbeb', borderRadius: 16, border: '1px solid #fde68a', padding: '12px 14px', marginBottom: 16 }}>
+    <div style={{ background: '#bbf7d0', borderRadius: 16, border: '2px solid #16a34a', padding: '12px 14px', marginBottom: 16 }}>
       <p style={{ margin: '0 0 8px', fontSize: 13, fontWeight: 700, color: '#92400e' }}>
         🚶 Par mes propres moyens — {c.passagers.length} champion{c.passagers.length !== 1 ? 's' : ''}
       </p>
