@@ -23,7 +23,7 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
-  const { nom, depart, arrivee, capacite, special, phone, wabotKey } = await req.json()
+  const { nom, depart, arrivee, capacite, special, phone, wabotKey, heureRdv } = await req.json()
   if (!nom?.trim()) return NextResponse.json({ error: 'Nom requis' }, { status: 400 })
   const chauffeur = await prisma.chauffeur.create({
     data: {
@@ -32,6 +32,7 @@ export async function POST(req: NextRequest) {
       arrivee: arrivee?.trim() || null,
       capacite: capacite ? parseInt(capacite) : 4,
       special: special ?? false,
+      heureRdv: heureRdv?.trim() || '17:40',
       phone: phone?.trim() || null,
       wabotKey: wabotKey?.trim() || null,
     },

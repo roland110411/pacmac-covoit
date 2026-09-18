@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 
 type Passager = { id: number; nom: string; createdAt: string }
-type Chauffeur = { id: number; nom: string; depart: string | null; arrivee: string | null; capacite: number; special: boolean; createdAt: string; passagers: Passager[] }
+type Chauffeur = { id: number; nom: string; depart: string | null; arrivee: string | null; heureRdv: string; capacite: number; special: boolean; createdAt: string; passagers: Passager[] }
 
 // ─── Section passagers orphelins ───────────────────────────────────────────
 function SectionOrphelins({ orphelins, chauffeurs, onRefresh }: {
@@ -239,6 +239,7 @@ function CarteChaufeur({ c, onRefresh }: { c: Chauffeur; onRefresh: () => void }
                     {c.depart && `📍 ${c.depart}`}{c.depart && c.arrivee && ' → '}{c.arrivee}
                   </p>
                 )}
+                <p style={{ margin: '2px 0 0', fontSize: 13, color: '#6b7280' }}>🕐 RDV {c.heureRdv}</p>
               </>
             )}
           </div>
@@ -324,7 +325,7 @@ function CarteChaufeur({ c, onRefresh }: { c: Chauffeur; onRefresh: () => void }
 // ─── Formulaire chauffeur ───────────────────────────────────────────────────
 function FormulaireChaufeur({ onRefresh }: { onRefresh: () => void }) {
   const [open, setOpen] = useState(false)
-  const [form, setForm] = useState({ nom: '', depart: '', arrivee: '', capacite: '4' })
+  const [form, setForm] = useState({ nom: '', depart: '', arrivee: '', capacite: '4', heureRdv: '17:40' })
   const [loading, setLoading] = useState(false)
 
   const submit = async (e: React.FormEvent) => {
@@ -335,7 +336,7 @@ function FormulaireChaufeur({ onRefresh }: { onRefresh: () => void }) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(form),
     })
-    setForm({ nom: '', depart: '', arrivee: '', capacite: '4' })
+    setForm({ nom: '', depart: '', arrivee: '', capacite: '4', heureRdv: '17:40' })
     setLoading(false); setOpen(false); onRefresh()
   }
 
@@ -355,9 +356,14 @@ function FormulaireChaufeur({ onRefresh }: { onRefresh: () => void }) {
         <input value={form.nom} onChange={e => setForm(f => ({ ...f, nom: e.target.value }))}
           placeholder="Votre nom *" required
           style={{ padding: '13px 14px', borderRadius: 12, border: '1px solid #d1d5db', fontSize: 15 }} />
-        <input value={form.depart} onChange={e => setForm(f => ({ ...f, depart: e.target.value }))}
-          placeholder="📍 Départ *" required
-          style={{ padding: '13px 14px', borderRadius: 12, border: '1px solid #d1d5db', fontSize: 15 }} />
+        <div style={{ display: 'flex', gap: 8 }}>
+          <input value={form.depart} onChange={e => setForm(f => ({ ...f, depart: e.target.value }))}
+            placeholder="📍 Départ *" required
+            style={{ flex: 1, padding: '13px 14px', borderRadius: 12, border: '1px solid #d1d5db', fontSize: 15 }} />
+          <input value={form.heureRdv} onChange={e => setForm(f => ({ ...f, heureRdv: e.target.value }))}
+            type="time" required
+            style={{ width: 110, padding: '13px 10px', borderRadius: 12, border: '1px solid #d1d5db', fontSize: 15 }} />
+        </div>
         <input value={form.arrivee} onChange={e => setForm(f => ({ ...f, arrivee: e.target.value }))}
           placeholder="🏁 Arrivée *" required
           style={{ padding: '13px 14px', borderRadius: 12, border: '1px solid #d1d5db', fontSize: 15 }} />

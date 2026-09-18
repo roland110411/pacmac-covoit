@@ -21,6 +21,7 @@ model Chauffeur {
   arrivee    String?
   capacite   Int        @default(4)
   special    Boolean    @default(false)
+  heureRdv   String    @default("17:40")
   phone      String?
   wabotKey   String?
   createdAt  DateTime   @default(now())
