@@ -62,7 +62,7 @@ function PassagerDraggable({ passager, onRefresh, onDelete }: { passager: Passag
         🏃 {passager.nom}
       </div>
       <button onClick={onDelete}
-        style={{ position: 'absolute', top: -4, right: -4, width: 17, height: 17, borderRadius: '50%', background: '#ef4444', color: 'white', border: 'none', cursor: 'pointer', fontSize: 9, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>✕</button>
+        style={{ position: 'absolute', top: -4, right: -4, width: 17, height: 17, borderRadius: '50%', background: '#fecaca', color: '#dc2626', border: 'none', cursor: 'pointer', fontSize: 9, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>✕</button>
     </div>
   )
 }
@@ -96,7 +96,7 @@ function CarteSansVehicule({ c, onRefresh }: { c: Chauffeur; onRefresh: () => vo
   return (
     <div style={{ background: '#bbf7d0', borderRadius: 16, border: '2px solid #16a34a', padding: '12px 14px', marginBottom: 16 }}>
       <p style={{ margin: '0 0 8px', fontSize: 13, fontWeight: 700, color: '#92400e' }}>
-        🚶 Par mes propres moyens — {c.passagers.length} champion{c.passagers.length !== 1 ? 's' : ''}
+        🚶 Par mes propres moyens
       </p>
       <form onSubmit={rejoindre} style={{ display: 'flex', gap: 8, marginBottom: c.passagers.length ? 10 : 0 }}>
         <input value={nom} onChange={e => setNom(e.target.value)} placeholder="Votre nom..."
@@ -114,7 +114,7 @@ function CarteSansVehicule({ c, onRefresh }: { c: Chauffeur; onRefresh: () => vo
                 🚶 {p.nom}
               </span>
               <button onClick={() => retirer(p.id)}
-                style={{ position: 'absolute', top: -4, right: -4, width: 16, height: 16, borderRadius: '50%', background: '#ef4444', color: 'white', border: 'none', cursor: 'pointer', fontSize: 9, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>✕</button>
+                style={{ position: 'absolute', top: -4, right: -4, width: 16, height: 16, borderRadius: '50%', background: '#fecaca', color: '#dc2626', border: 'none', cursor: 'pointer', fontSize: 9, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>✕</button>
             </div>
           ))}
         </div>
@@ -245,9 +245,11 @@ function CarteChaufeur({ c, onRefresh }: { c: Chauffeur; onRefresh: () => void }
           </div>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <span style={{ padding: '5px 12px', borderRadius: 999, fontSize: 13, fontWeight: 700, background: plein ? '#fee2e2' : '#dbeafe', color: plein ? '#dc2626' : '#1d4ed8', whiteSpace: 'nowrap' }}>
-            {plein ? '🔴 Complet' : `${c.passagers.length}/${c.capacite}`}
-          </span>
+          {plein && (
+            <span style={{ padding: '5px 12px', borderRadius: 999, fontSize: 13, fontWeight: 700, background: '#fee2e2', color: '#dc2626', whiteSpace: 'nowrap' }}>
+              🔴 Complet
+            </span>
+          )}
           <button onClick={() => setConfirmSuppr(true)}
             style={{ width: 30, height: 30, borderRadius: '50%', background: '#fee2e2', border: 'none', cursor: 'pointer', fontSize: 14, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
             🗑️
@@ -281,11 +283,6 @@ function CarteChaufeur({ c, onRefresh }: { c: Chauffeur; onRefresh: () => void }
       )}
 
       <div style={{ padding: '14px 16px' }}>
-        {/* Barre */}
-        <div style={{ height: 6, background: '#f3f4f6', borderRadius: 99, overflow: 'hidden', marginBottom: 12 }}>
-          <div style={{ height: '100%', borderRadius: 99, width: `${pct}%`, background: plein ? '#ef4444' : '#3b82f6', transition: 'width 0.4s' }} />
-        </div>
-
         {/* Sièges */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 8, marginBottom: 12 }}>
           {sieges.map((p, i) => (
@@ -300,7 +297,7 @@ function CarteChaufeur({ c, onRefresh }: { c: Chauffeur; onRefresh: () => void }
               </div>
               {p && (
                 <button onClick={() => supprimerPassager(p.id)}
-                  style={{ position: 'absolute', top: -5, right: -5, width: 18, height: 18, borderRadius: '50%', background: '#ef4444', color: 'white', border: 'none', cursor: 'pointer', fontSize: 9, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>✕</button>
+                  style={{ position: 'absolute', top: -5, right: -5, width: 18, height: 18, borderRadius: '50%', background: '#fecaca', color: '#dc2626', border: 'none', cursor: 'pointer', fontSize: 9, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>✕</button>
               )}
             </div>
           ))}
@@ -493,10 +490,7 @@ export default function CovoituragePage() {
       {/* Header */}
       <div style={{ position: 'sticky', top: 0, zIndex: 10, background: 'white', borderBottom: '1px solid #e5e7eb', padding: '14px 16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div>
-          <h1 style={{ margin: 0, fontSize: 20, fontWeight: 800 }}>🚗 PacMac covoit <span style={{ fontSize: 13, fontWeight: 400, color: '#9ca3af' }}>{new Date().toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' })}</span></h1>
-          <p style={{ margin: '2px 0 0', fontSize: 13, color: '#6b7280' }}>
-            {totalPassagers} champion{totalPassagers !== 1 ? 's' : ''} inscrit{totalPassagers !== 1 ? 's' : ''}
-          </p>
+          <h1 style={{ margin: 0, fontSize: 20, fontWeight: 800 }}>🚗 PacMac covoit</h1>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           {confirmRaz ? (
